@@ -23,32 +23,37 @@ const k=s=>p.locator('[data-k="'+s+'"]');
 
 // --- заполнение
 await p.goto(base+'/ep.html');
-await p.fill('[data-k=name]','Тест Тестов');
-await k('q16_g0_othertxt').fill('каждый вторник');           // «Другое» в радио
+await p.fill('[data-k=name]','Luis Prueba');
+await k('q16_g0_othertxt').fill('cada martes');           // «Другое» в радио
 assert(await p.locator('[data-k=q16_g0][value=other]').isChecked(),'radio other auto-checked');
-await k('q2_g0_othertxt').fill('интернет для дач');           // checkbox №2
-await k('q6_g0_othertxt').fill('самописная CRM');             // checkbox №6
+await k('q2_g0_othertxt').fill('internet para casas rurales');           // checkbox №2
+await k('q6_g0_othertxt').fill('CRM propio');             // checkbox №6
 await k('q24_g0_other_pct').fill('7');
-await k('q24_g0_othertxt').fill('криптовалюта');
+await k('q24_g0_othertxt').fill('criptomoneda');
 await k('q24_g0_o0_pct').fill('80');
 assert(await k('q24_g0_o0').isChecked(),'pct auto-checks option');
 await p.locator('[data-k=q28_g0]').first().check();
 await p.locator('[data-k=q29_g1][value=o0]').check();
 await k('q29_g0_othertxt').count(); // нет other у №29 — не должно падать
 await k('s0_chk').check();
-await k('s0_c').fill('пример обезличен, файл invoice.pdf');
-await k('s8_c').fill('только без выноса за ЕС');
+await k('s0_c').fill('ejemplo anonimizado, archivo invoice.pdf');
+await k('s8_c').fill('solo sin salir de la UE');
+
+// --- испанский, без кириллицы
+assert.equal(await p.getAttribute('html','lang'),'es');
+assert(!/[А-Яа-яЁё]/.test(await p.evaluate(()=>document.body.innerText)),'no cyrillic in page');
+assert.equal(await p.locator('text=Otro').count()>0,true);
 
 // --- перезагрузка
 await p.reload();
-assert.equal(await k('name').inputValue(),'Тест Тестов');
-assert.equal(await k('q16_g0_othertxt').inputValue(),'каждый вторник');
+assert.equal(await k('name').inputValue(),'Luis Prueba');
+assert.equal(await k('q16_g0_othertxt').inputValue(),'cada martes');
 assert(await p.locator('[data-k=q16_g0][value=other]').isChecked());
-assert.equal(await k('q2_g0_othertxt').inputValue(),'интернет для дач');
+assert.equal(await k('q2_g0_othertxt').inputValue(),'internet para casas rurales');
 assert(await k('q2_g0_other').isChecked());
-assert.equal(await k('q6_g0_othertxt').inputValue(),'самописная CRM');
+assert.equal(await k('q6_g0_othertxt').inputValue(),'CRM propio');
 assert.equal(await k('q24_g0_other_pct').inputValue(),'7');
-assert.equal(await k('s0_c').inputValue(),'пример обезличен, файл invoice.pdf');
+assert.equal(await k('s0_c').inputValue(),'ejemplo anonimizado, archivo invoice.pdf');
 
 // --- экспорт файлов
 await p.evaluate(()=>{document.querySelector('#bDl').scrollIntoView();});
@@ -57,30 +62,36 @@ await p.click('#bDl'); await p.waitForTimeout(1200);
 assert.equal(dls.length,2);
 let txtF,jsonF;
 for(const d of dls){const t=fs.readFileSync(await d.path(),'utf8'); if(d.suggestedFilename().endsWith('.txt'))txtF=t; else jsonF=t;}
-for(const need of ['каждый вторник','интернет для дач','самописная CRM','криптовалюта','7 %','80 %','Тест Тестов','invoice.pdf'])
+for(const need of ['cada martes','internet para casas rurales','CRM propio','criptomoneda','7 %','80 %','Luis Prueba','invoice.pdf'])
   assert(txtF.includes(need),'txt has '+need);
-assert(!txtF.includes('(отмечено)'),'no bare marker');
+assert(!txtF.includes('(marcado)'),'no bare marker');
+for(const need of ['Otro: cada martes','Cuestionario para Luis','Fecha de cumplimentación','Nombre: Luis Prueba','— sin respuesta —'])
+  assert(txtF.includes(need),'txt es: '+need);
+assert(!/[А-Яа-яЁё]/.test(txtF),'no cyrillic in txt');
+const fn=dls.map(d=>d.suggestedFilename());
+assert(fn.every(f=>/^ghofi-cuestionario-respuestas-\d{4}-\d{2}-\d{2}\.(txt|json)$/.test(f)),'filenames '+fn);
+assert(jsonF.includes('cada martes'));
 const J=JSON.parse(jsonF);
 const q16=J.sections[2].questions.find(q=>q.n===16).groups[0];
-assert.equal(q16.other,'каждый вторник');
-assert.equal(J.name,'Тест Тестов');
+assert.equal(q16.other,'cada martes');
+assert.equal(J.name,'Luis Prueba');
 // копирование
 await ctx.grantPermissions(['clipboard-read','clipboard-write'],{origin:base});
 await p.click('#bCp');await p.waitForTimeout(300);
-assert((await p.evaluate(()=>navigator.clipboard.readText())).includes('каждый вторник'));
+assert((await p.evaluate(()=>navigator.clipboard.readText())).includes('cada martes'));
 
 // --- отправка
-await p.click('#bSend'); await p.waitForFunction(()=>document.querySelector('#status').textContent.includes('спасибо'));
+await p.click('#bSend'); await p.waitForFunction(()=>document.querySelector('#status').textContent.includes('gracias'));
 await p.click('#bSend'); await p.waitForFunction(()=>true); await p.waitForTimeout(300);
 assert.equal(posts.length,2);
 assert(posts[0].ct.startsWith('text/plain'));
 const b0=JSON.parse(posts[0].body),b1=JSON.parse(posts[1].body);
 assert(b0.submission_id&&b0.submission_id===b1.submission_id,'stable sid');
-assert(b0.answers_text.includes('каждый вторник'));
-assert.equal(b0.name,'Тест Тестов');
+assert(b0.answers_text.includes('cada martes'));
+assert.equal(b0.name,'Luis Prueba');
 assert(/^\d+\/59 \(★ \d+\/\d+\)$/.test(b0.progress),b0.progress);
-assert.equal(b0.answers.sections[2].questions.find(q=>q.n===16).groups[0].other,'каждый вторник');
-assert.equal(await p.textContent('#status'),'Ответы отправлены, спасибо!');
+assert.equal(b0.answers.sections[2].questions.find(q=>q.n===16).groups[0].other,'cada martes');
+assert.equal(await p.textContent('#status'),'¡Respuestas enviadas, gracias!');
 // «Очистить» не сбрасывает sid
 p.once('dialog',d=>d.accept()); await p.click('#bClr');
 assert.equal(await k('q16_g0_othertxt').inputValue(),'');
@@ -90,27 +101,30 @@ assert.equal(JSON.parse(posts[2].body).submission_id,b0.submission_id);
 // --- reject
 assert.deepEqual(errs,[],'console errors: '+errs);
 await p.unroute(EP); await p.route(EP,r=>r.abort());
-await p.click('#bSend'); await p.waitForFunction(()=>document.querySelector('#status').textContent.includes('Скачать ответы'));
+await p.click('#bSend'); await p.waitForFunction(()=>document.querySelector('#status').textContent.includes('Descargar respuestas'));
 assert(!(await p.locator('#bSend').isDisabled()),'button re-enabled');
 errs.length=0; // сетевой сбой в этом шаге вызван намеренно
+
+assert.equal(await p.evaluate(()=>document.title),'Cuestionario para Luis: clientes, facturas, banco');
 
 // --- плейсхолдер
 const p2=await ctx.newPage(); let called=false;
 p2.on('request',r=>{if(r.method()==='POST')called=true});
 p2.on('pageerror',e=>errs.push('pageerror:'+e.message));
 await p2.goto(base+'/'); await p2.click('#bSend');
-assert((await p2.textContent('#status')).includes('Отправка пока не настроена'));
+assert((await p2.textContent('#status')).includes('El envío aún no está configurado'));
 assert(!called);
 // mailto
 const href=await p2.getAttribute('#bMail','href');
 assert(href.startsWith('mailto:podgoretskiy@gmail.com?subject=')&&href.length<800);
+assert(decodeURIComponent(href).includes('Cuestionario GhoFi — respuestas de Luis'));
 
 // --- скролл
 for(const w of [375,1280]){
   for(const pg of [p2]){
     await pg.setViewportSize({width:w,height:800});
     await pg.goto(base+'/ep.html');
-    await pg.fill('[data-k=q16_g0_othertxt]','очень-длинное-слово-'.repeat(8));
+    await pg.fill('[data-k=q16_g0_othertxt]','palabra-muy-larga-'.repeat(8));
     await pg.fill('[data-k=name]','x'.repeat(200));
     const m=await pg.evaluate(()=>[document.documentElement.scrollWidth,document.documentElement.clientWidth]);
     assert(m[0]<=m[1],'hscroll at '+w+': '+m);

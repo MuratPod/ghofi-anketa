@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="data:,">
-<title>Анкета для Луиса: клиенты, счета, банк</title>
+<title>Cuestionario para Luis: clientes, facturas, banco</title>
 <style>
 :root{--bg:#f5f6f8;--card:#fff;--text:#1c2330;--muted:#5a6475;--line:#d5dae3;--accent:#1d4ed8;--accent-d:#1639a8;--star:#b45309;--starbg:#fff7e6;--ok:#15803d}
 *{box-sizing:border-box}
@@ -108,106 +108,139 @@ const UI = {ru:{
   samplesTitle:'Образцы',
   fileBase:'ghofi-anketa-otvety', filledOn:'Дата заполнения', tocTitle:'Разделы'
 }};
+UI.es={
+  title:'Cuestionario para Luis: clientes, facturas, banco',
+  hello:'¡Hola, Luis!',
+  intro:'Este cuestionario sirve para que el nuevo sistema de clientes, facturas y banco refleje vuestro proceso real y no nuestras suposiciones. Responde de forma breve y con tus propias palabras. Una respuesta como «no lo sé» o «depende del caso» también es útil. Algunas preguntas se refieren a cómo funciona hoy el trabajo de Valeria: respóndelas tal como tú lo ves.',
+  bullets:[
+    'Lleva unos 40–60 minutos. Puedes rellenarlo por partes.',
+    '★ — las preguntas más importantes. Si tienes poco tiempo, responde primero a esas.',
+    '(opcional) — se puede omitir.',
+    'Donde haya opciones, marca las que correspondan y añade lo que haga falta.',
+    'Por favor, anonimiza los documentos de muestra: sustituye nombres, DNI/NIE e IBAN. Nos importa la estructura, no los datos personales.',
+    'Después del cuestionario volveremos a comentar contigo por mensaje los puntos que queden abiertos.'
+  ],
+  optional:'(opcional)', other:'Otro', otherPh:'añade aquí', pctPh:'%',
+  comment:'Comentario / respuesta libre', answerPh:'Respuesta',
+  sampleCheck:'Podemos enviarlo', sampleComment:'Comentario',
+  progQ:'Preguntas respondidas', progStar:'De ellas, preguntas ★',
+  thanks:'¡Gracias!',
+  download:'Descargar respuestas', copy:'Copiar respuestas', copied:'Copiado', copyFail:'No se pudo copiar — usa «Descargar respuestas»',
+  downloaded:'Archivos descargados (.txt y .json)',
+  send:'Enviar respuestas a Murat', sending:'Enviando…', sent:'¡Respuestas enviadas, gracias!',
+  sendFail:'No se pudieron enviar las respuestas. Pulsa «Descargar respuestas» y envía el archivo a Murat.',
+  sendNotConfigured:'El envío aún no está configurado. Pulsa «Descargar respuestas» y envía el archivo a Murat.',
+  nameLbl:'Nombre (opcional)', namePh:'Cómo te llamas', nameLine:'Nombre',
+  mail:'O escribir a Murat por correo',
+  mailBody:'¡Hola! Te adjunto las respuestas del cuestionario (el archivo del botón «Descargar respuestas»).',
+  mailNote:'Si el envío no ha funcionado: descarga las respuestas y envía el archivo a Murat.',
+  clear:'Borrar respuestas', clearConfirm:'¿Borrar todas las respuestas introducidas? Esta acción no se puede deshacer.',
+  noAnswer:'— sin respuesta —', checked:'Marcado', commentLbl:'Comentario', otherLbl:'Otro', marked:'(marcado)',
+  canSend:'Podemos enviarlo', cannotSend:'Sin marcar',
+  mailSubject:'Cuestionario GhoFi — respuestas de Luis', mailTo:'podgoretskiy@gmail.com',
+  samplesTitle:'Muestras',
+  fileBase:'ghofi-cuestionario-respuestas', filledOn:'Fecha de cumplimentación', tocTitle:'Secciones'
+};
 
 const cb=(options,extra)=>Object.assign({type:'checkbox',options},extra||{});
 const rd=(options,extra)=>Object.assign({type:'radio',options},extra||{});
 
 const SECTIONS = [
-{id:1,title:'1. Общее и объёмы',questions:[
- {n:1,star:true,text:'Сколько счетов клиентам выставляется в месяц (порядок)? Сколько счетов от поставщиков приходит в месяц?'},
- {n:2,text:'Какие услуги и тарифы действуют?',groups:[cb(['фибра','мобильная связь','пакеты','фиксированная телефония','ТВ'],{other:true})],after:'Сколько тарифов примерно, есть ли старые тарифы, которые остались только у части клиентов?'},
- {n:3,text:'Какая доля клиентов — физлица, а какая — компании и autónomos (примерно, %)?'},
- {n:4,star:true,text:'Кто что делает сейчас (в том числе Валерия): кто выставляет счета, кто смотрит банк и отмечает оплаты, кто работает с должниками, кто платит поставщикам, кто общается с гестором? (Луис / Валерия / гестор / другие)'},
- {n:5,star:true,text:'Сколько времени уходит на каждую задачу (в день или в неделю): выставление счетов, банк и оплаты, счета поставщиков, должники, отчёты?'},
- {n:6,star:true,text:'Какие программы и инструменты используются сейчас?',groups:[cb(['Excel / Google Sheets','UISP','программа агента выставления счетов','порталы банков','бухгалтерская программа гестора','почта','WhatsApp','бумага'],{other:true})]},
- {n:7,optional:true,text:'Сколько у компании сотрудников (порядок)? Есть ли свод по зарплатам и Seguridad Social в удобном виде (какой)?'}
+{id:1,title:'1. Aspectos generales y volúmenes',questions:[
+ {n:1,star:true,text:'¿Cuántas facturas a clientes se emiten al mes (orden de magnitud)? ¿Cuántas facturas de proveedores llegan al mes?'},
+ {n:2,text:'¿Qué servicios y tarifas hay actualmente?',groups:[cb(['fibra','telefonía móvil','paquetes','telefonía fija','TV'],{other:true})],after:'¿Cuántas tarifas hay aproximadamente? ¿Quedan tarifas antiguas que solo mantiene una parte de los clientes?'},
+ {n:3,text:'¿Qué proporción de clientes son particulares y cuál son empresas y autónomos (aproximadamente, en %)?'},
+ {n:4,star:true,text:'¿Quién hace qué ahora (incluida Valeria)? ¿Quién emite las facturas, quién revisa el banco y marca los pagos, quién gestiona a los morosos, quién paga a los proveedores y quién habla con el gestor? (Luis / Valeria / gestor / otros)'},
+ {n:5,star:true,text:'¿Cuánto tiempo lleva cada tarea (al día o a la semana)? Emisión de facturas, banco y pagos, facturas de proveedores, morosos, informes.'},
+ {n:6,star:true,text:'¿Qué programas y herramientas se usan ahora?',groups:[cb(['Excel / Google Sheets','UISP','programa del agente de facturación','portales de los bancos','programa de contabilidad del gestor','correo electrónico','WhatsApp','papel'],{other:true})]},
+ {n:7,optional:true,text:'¿Cuántos empleados tiene la empresa (orden de magnitud)? ¿Existe un resumen de nóminas y Seguridad Social en un formato cómodo (cuál)?'}
 ]},
-{id:2,title:'2. Клиенты и CRM',questions:[
- {n:8,star:true,text:'Где сейчас хранится карточка клиента и что в ней есть?',groups:[cb(['ФИО / название','DNI / NIE / CIF','адрес установки','адрес для счетов','IBAN','мандат SEPA','телефон','email','тариф','оборудование','договор'],{other:true})]},
- {n:9,text:'Как подключается новый клиент: шаги, кто вводит данные, где и как подписывается договор (бумага, PDF, электронная подпись)?'},
- {n:10,text:'Как оформляются изменения: смена тарифа, адреса, владельца договора, IBAN? Как это отражается на счёте текущего месяца?'},
- {n:11,text:'Как оформляется расторжение: сроки, возврат оборудования, последний счёт, штраф за досрочное расторжение (permanencia)?'},
- {n:12,text:'Каналы общения с клиентами:',groups:[cb(['телефон','WhatsApp','email','офис','сайт'],{other:true})],after:'Где хранится история общения?'},
- {n:13,text:'Оборудование клиентам:',groups:[cb(['продаётся','сдаётся в аренду','даётся бесплатно','в рассрочку'])],after:'Как это видно в счёте?'},
- {n:14,optional:true,text:'Какую информацию о клиенте вы хотите видеть на одном экране, чтобы сразу ответить на любой вопрос о его деньгах?'}
+{id:2,title:'2. Clientes y CRM',questions:[
+ {n:8,star:true,text:'¿Dónde se guarda ahora la ficha del cliente y qué contiene?',groups:[cb(['nombre y apellidos / razón social','DNI / NIE / CIF','dirección de instalación','dirección de facturación','IBAN','mandato SEPA','teléfono','correo electrónico','tarifa','equipos','contrato'],{other:true})]},
+ {n:9,text:'¿Cómo se da de alta a un cliente nuevo? Pasos, quién introduce los datos, dónde y cómo se firma el contrato (papel, PDF, firma electrónica).'},
+ {n:10,text:'¿Cómo se gestionan los cambios: cambio de tarifa, de dirección, de titular del contrato, de IBAN? ¿Cómo afecta eso a la factura del mes en curso?'},
+ {n:11,text:'¿Cómo se gestiona la baja? Plazos, devolución de equipos, última factura, penalización por baja anticipada (permanencia).'},
+ {n:12,text:'Canales de comunicación con los clientes:',groups:[cb(['teléfono','WhatsApp','correo electrónico','oficina','web'],{other:true})],after:'¿Dónde se guarda el historial de comunicaciones?'},
+ {n:13,text:'Equipos para los clientes:',groups:[cb(['se venden','se alquilan','se ceden gratis','a plazos'])],after:'¿Cómo se refleja eso en la factura?'},
+ {n:14,optional:true,text:'¿Qué información del cliente querríais ver en una sola pantalla para poder responder de inmediato a cualquier pregunta sobre su dinero?'}
 ]},
-{id:3,title:'3. Выставление счетов и оплаты клиентов',questions:[
- {n:15,star:true,text:'Через какого уполномоченного агента или какую программу выставляются счета? Умеет ли она выгружать счета?',groups:[cb(['CSV/Excel','XML','API','только PDF','не знаю'])]},
- {n:16,star:true,text:'Когда выставляются счета:',groups:[rd(['раз в месяц, в одну дату (какую?)','по дате подключения клиента'],{other:true})],after:'Сколько занимает «день выставления»?'},
- {n:17,text:'Серии нумерации: сколько их и какие (обычные счета, rectificativas, другие)?'},
- {n:18,text:'Rectificativas: как часто, по каким причинам и как оформляются?'},
- {n:19,text:'Есть ли пропорциональный расчёт (prorrateo) при подключении, отключении или смене тарифа в середине месяца? Как он считается?'},
- {n:20,text:'Скидки, акции, бесплатные месяцы, компенсации за аварии — какие бывают и как применяются?'},
- {n:21,text:'IVA: всегда 21 %? Есть ли клиенты с другим режимом (Канары / Сеута / Мелилья, клиенты из других стран ЕС, освобождения)?'},
- {n:22,optional:true,text:'Есть ли клиенты-компании, которым нужна retención IRPF или особые реквизиты в счёте?'},
- {n:23,text:'Бывают ли предоплата, оплата за несколько месяцев вперёд, рассрочка установки или оборудования?'},
- {n:24,star:true,text:'Как клиенты платят и примерная доля:',groups:[cb(['SEPA-списание (recibo domiciliado)','карта / онлайн','перевод','наличные в офисе','Bizum'],{other:true,percent:true})]},
- {n:25,star:true,text:'Как формируется пакет SEPA-списаний (remesa): кто, в какой программе, в какой банк, сколько квитанций в пакете? Остаётся ли у вас файл пакета со списком квитанций?'},
- {n:26,optional:true,text:'Где хранятся мандаты SEPA (бумага, PDF, в системе) и их номера (referencia del mandato)?'},
- {n:27,text:'Как клиент получает счёт:',groups:[cb(['PDF по email','личный кабинет','бумага','не получает'],{other:true})]},
+{id:3,title:'3. Facturación y cobros de clientes',questions:[
+ {n:15,star:true,text:'¿A través de qué agente autorizado o programa se emiten las facturas? ¿Permite exportar las facturas?',groups:[cb(['CSV/Excel','XML','API','solo PDF','no lo sé'])]},
+ {n:16,star:true,text:'¿Cuándo se emiten las facturas?',groups:[rd(['una vez al mes, en una misma fecha (¿cuál?)','según la fecha de alta del cliente'],{other:true})],after:'¿Cuánto lleva el «día de facturación»?'},
+ {n:17,text:'Series de numeración: ¿cuántas hay y cuáles son (facturas normales, rectificativas, otras)?'},
+ {n:18,text:'Rectificativas: ¿con qué frecuencia, por qué motivos y cómo se tramitan?'},
+ {n:19,text:'¿Hay cálculo proporcional (prorrateo) en altas, bajas o cambios de tarifa a mitad de mes? ¿Cómo se calcula?'},
+ {n:20,text:'Descuentos, promociones, meses gratis, compensaciones por averías: ¿cuáles hay y cómo se aplican?'},
+ {n:21,text:'IVA: ¿siempre el 21 %? ¿Hay clientes con otro régimen (Canarias / Ceuta / Melilla, clientes de otros países de la UE, exenciones)?'},
+ {n:22,optional:true,text:'¿Hay clientes empresa que necesiten retención de IRPF o datos especiales en la factura?'},
+ {n:23,text:'¿Se dan casos de pago por adelantado, pago de varios meses por anticipado o instalación o equipos a plazos?'},
+ {n:24,star:true,text:'¿Cómo pagan los clientes y qué proporción aproximada usa cada medio?',groups:[cb(['domiciliación SEPA (recibo domiciliado)','tarjeta / online','transferencia','efectivo en la oficina','Bizum'],{other:true,percent:true})]},
+ {n:25,star:true,text:'¿Cómo se genera la remesa de domiciliaciones SEPA? ¿Quién la hace, en qué programa, a qué banco y cuántos recibos lleva cada remesa? ¿Conserváis el archivo de la remesa con la lista de recibos?'},
+ {n:26,optional:true,text:'¿Dónde se guardan los mandatos SEPA (papel, PDF, en el sistema) y sus números (referencia del mandato)?'},
+ {n:27,text:'¿Cómo recibe el cliente la factura?',groups:[cb(['PDF por correo electrónico','área de cliente','papel','no la recibe'],{other:true})]},
  {n:28,star:true,text:'',groups:[
-   rd(['ежемесячно','ежеквартально'],{label:'Как часто подаётся IVA (модель 303):'}),
-   rd(['меньше 6 010 121,04 €','больше'],{label:'Годовой оборот примерно:'})]},
+   rd(['mensual','trimestral'],{label:'¿Con qué frecuencia se presenta el IVA (modelo 303)?'}),
+   rd(['menos de 6.010.121,04 €','más'],{label:'Volumen de negocio anual aproximado:'})]},
  {n:29,star:true,text:'',groups:[
-   rd(['уже работает','готовимся (к какой дате?)','не знаю'],{label:'Что говорит ваш агент или программа о Verifactu:'}),
-   rd(['да','нет','не знаю'],{label:'Подключены ли вы к SII?'})]}
+   rd(['ya funciona','nos estamos preparando (¿para qué fecha?)','no lo sé'],{label:'¿Qué dice vuestro agente o programa sobre Verifactu?'}),
+   rd(['sí','no','no lo sé'],{label:'¿Estáis acogidos al SII?'})]}
 ]},
-{id:4,title:'4. Счета поставщиков',questions:[
- {n:30,star:true,text:'Основные группы поставщиков:',groups:[cb(['оптовые операторы / сеть','интерконнект / транзит','оборудование','электроэнергия','аренда','подрядчики / монтажники','программы и сервисы'],{other:true})],after:'Сколько активных поставщиков примерно?'},
- {n:31,text:'Есть ли поставщики из других стран (ЕС / вне ЕС)? Какие?'},
- {n:32,star:true,text:'Как приходят счета поставщиков:',groups:[cb(['PDF по email','портал поставщика','бумага','электронный счёт (Facturae)'],{other:true})],after:'Куда сохраняются?'},
- {n:33,text:'Кто проверяет и одобряет счёт перед оплатой? Сверяете ли с договором или заказом?'},
- {n:34,text:'Как платите поставщикам:',groups:[cb(['перевод вручную','пакет переводов','поставщик списывает сам','карта'])],after:'Кто подтверждает платёж в банке?'},
- {n:35,text:'Как архивируются счета поставщиков и как передаются гестору?'},
- {n:36,text:'Какие отраслевые платежи и сборы вы платите как оператор связи (что, кому и когда)?'},
- {n:37,optional:true,text:'Есть ли субсидии, кредиты или лизинг (например, на сеть или оборудование)?'}
+{id:4,title:'4. Facturas de proveedores',questions:[
+ {n:30,star:true,text:'Principales grupos de proveedores:',groups:[cb(['operadores mayoristas / red','interconexión / tránsito','equipos','electricidad','alquiler','contratistas / instaladores','programas y servicios'],{other:true})],after:'¿Cuántos proveedores activos hay aproximadamente?'},
+ {n:31,text:'¿Hay proveedores de otros países (UE / fuera de la UE)? ¿Cuáles?'},
+ {n:32,star:true,text:'¿Cómo llegan las facturas de proveedores?',groups:[cb(['PDF por correo electrónico','portal del proveedor','papel','factura electrónica (Facturae)'],{other:true})],after:'¿Dónde se guardan?'},
+ {n:33,text:'¿Quién revisa y aprueba la factura antes de pagarla? ¿La comprobáis con el contrato o el pedido?'},
+ {n:34,text:'¿Cómo pagáis a los proveedores?',groups:[cb(['transferencia manual','remesa de transferencias','el proveedor cobra por domiciliación','tarjeta'])],after:'¿Quién confirma el pago en el banco?'},
+ {n:35,text:'¿Cómo se archivan las facturas de proveedores y cómo se pasan al gestor?'},
+ {n:36,text:'¿Qué pagos y tasas sectoriales abonáis como operador de telecomunicaciones (qué, a quién y cuándo)?'},
+ {n:37,optional:true,text:'¿Hay subvenciones, préstamos o leasing (por ejemplo, para la red o los equipos)?'}
 ]},
-{id:5,title:'5. Банк и оплаты',questions:[
- {n:38,star:true,text:'Сколько банков и счетов, в каких банках и для чего каждый (поступления от клиентов, платежи поставщикам, налоги)?'},
- {n:39,star:true,text:'Как получаете выписки:',groups:[cb(['Norma 43','CSV / Excel','PDF','только смотрим в портале'])],after:'Как часто и кто выгружает?'},
- {n:40,text:'Сколько движений в месяц по каждому счёту (порядок)?'},
- {n:41,star:true,text:'Как сейчас сопоставляете платёж с клиентом:',groups:[cb(['по сумме','по имени','по номеру клиента / счёта в назначении','по IBAN'],{other:true})],after:'Где отмечаете «оплачено»?'},
- {n:42,text:'Что клиенты обычно пишут в назначении перевода? Просите ли указывать номер клиента или счёта?'},
- {n:43,star:true,text:'Возвраты списаний (devoluciones): сколько в месяц (или %)? Видите ли причину возврата? Что делаете дальше:',groups:[cb(['повторное списание','комиссия за возврат','напоминание'],{other:true})]},
- {n:44,text:'Как часто бывают частичные оплаты, переплаты, оплата за несколько месяцев сразу, один плательщик за несколько клиентов? Как вы это учитываете?'},
- {n:45,text:'Бывают ли платежи от неизвестных плательщиков? Сколько примерно и что с ними делаете?'},
- {n:46,optional:true,text:'Банковские комиссии за пакеты и возвраты — учитываете отдельно?'}
+{id:5,title:'5. Banco y pagos',questions:[
+ {n:38,star:true,text:'¿Cuántos bancos y cuentas hay, en qué bancos y para qué sirve cada una (cobros de clientes, pagos a proveedores, impuestos)?'},
+ {n:39,star:true,text:'¿Cómo obtenéis los extractos?',groups:[cb(['Norma 43','CSV / Excel','PDF','solo los vemos en el portal'])],after:'¿Con qué frecuencia y quién los descarga?'},
+ {n:40,text:'¿Cuántos movimientos al mes hay en cada cuenta (orden de magnitud)?'},
+ {n:41,star:true,text:'¿Cómo asociáis ahora un pago con un cliente?',groups:[cb(['por importe','por nombre','por número de cliente / factura en el concepto','por IBAN'],{other:true})],after:'¿Dónde marcáis «pagado»?'},
+ {n:42,text:'¿Qué suelen escribir los clientes en el concepto de la transferencia? ¿Les pedís que indiquen el número de cliente o de factura?'},
+ {n:43,star:true,text:'Devoluciones de recibos: ¿cuántas hay al mes (o en %)? ¿Veis el motivo de la devolución? ¿Qué hacéis después?',groups:[cb(['nuevo cobro','comisión por devolución','recordatorio'],{other:true})]},
+ {n:44,text:'¿Con qué frecuencia hay pagos parciales, pagos de más, pagos de varios meses a la vez o un mismo pagador para varios clientes? ¿Cómo lo registráis?'},
+ {n:45,text:'¿Hay pagos de pagadores desconocidos? ¿Cuántos aproximadamente y qué hacéis con ellos?'},
+ {n:46,optional:true,text:'Comisiones bancarias por remesas y devoluciones: ¿las contabilizáis por separado?'}
 ]},
-{id:6,title:'6. Должники и напоминания',questions:[
- {n:47,star:true,text:'Через сколько дней клиент считается должником? Сколько должников обычно и на какую сумму?'},
- {n:48,text:'Как напоминаете:',groups:[cb(['SMS','email','звонок','WhatsApp','письмо'])],after:'Какие шаги и сроки? Кто за это отвечает?'},
- {n:49,star:true,text:'Когда и как ограничиваете или отключаете услугу, как восстанавливаете после оплаты? Кто это делает и где (например, в UISP)? Есть ли плата за восстановление?'},
- {n:50,optional:true,text:'Что делаете с безнадёжными долгами:',groups:[cb(['агентство по взысканию','списание','суд'],{other:true})]}
+{id:6,title:'6. Morosos y recordatorios',questions:[
+ {n:47,star:true,text:'¿Pasados cuántos días se considera moroso a un cliente? ¿Cuántos morosos hay normalmente y por qué importe?'},
+ {n:48,text:'¿Cómo hacéis los recordatorios?',groups:[cb(['SMS','correo electrónico','llamada','WhatsApp','carta'])],after:'¿Qué pasos y plazos hay? ¿Quién es el responsable?'},
+ {n:49,star:true,text:'¿Cuándo y cómo limitáis o cortáis el servicio y cómo lo restablecéis tras el pago? ¿Quién lo hace y dónde (por ejemplo, en UISP)? ¿Hay un cargo por reconexión?'},
+ {n:50,optional:true,text:'¿Qué hacéis con las deudas incobrables?',groups:[cb(['agencia de cobro','darlas de baja contablemente','vía judicial'],{other:true})]}
 ]},
-{id:7,title:'7. Отчётность и гестор',questions:[
- {n:51,star:true,text:'Кто ведёт бухгалтерию и налоги:',groups:[rd(['сами','внешний гестор / асесор','смешанно'])],after:'В какой программе? Кто подаёт декларации?'},
- {n:52,text:'Что, в каком виде и когда вы отправляете гестору (выписки, счета, списки, зарплаты)?'},
- {n:53,optional:true,text:'Какие декларации подаются:',groups:[cb(['303','390','111','115','347','349','200'],{other:true})]},
- {n:54,text:'Какие цифры Луис хочет видеть регулярно:',groups:[cb(['выставлено и получено за месяц','долги клиентов','долги поставщикам','остатки по банкам','новые и ушедшие клиенты','средний чек','прогноз денег'])],after:'Как часто?'},
- {n:55,text:'Как сейчас «закрывается» месяц и сколько это занимает?'}
+{id:7,title:'7. Informes y gestor',questions:[
+ {n:51,star:true,text:'¿Quién lleva la contabilidad y los impuestos?',groups:[rd(['nosotros mismos','gestor / asesor externo','mixto'])],after:'¿En qué programa? ¿Quién presenta las declaraciones?'},
+ {n:52,text:'¿Qué enviáis al gestor, en qué formato y cuándo (extractos, facturas, listados, nóminas)?'},
+ {n:53,optional:true,text:'¿Qué declaraciones se presentan?',groups:[cb(['303','390','111','115','347','349','200'],{other:true})]},
+ {n:54,text:'¿Qué cifras quiere ver Luis de forma regular?',groups:[cb(['facturado y cobrado del mes','deudas de clientes','deudas con proveedores','saldos de los bancos','altas y bajas de clientes','ticket medio','previsión de tesorería'])],after:'¿Con qué frecuencia?'},
+ {n:55,text:'¿Cómo se «cierra» ahora el mes y cuánto tiempo lleva?'}
 ]},
-{id:8,title:'8. Боли и пожелания',questions:[
- {n:56,star:true,text:'Три задачи, которые отнимают больше всего времени.'},
- {n:57,text:'Какие ошибки случаются чаще всего?',groups:[cb(['двойной счёт','неверный тариф','потерянная оплата','пропущенный возврат','ошибка в IVA'],{other:true})]},
- {n:58,star:true,text:'Что должно быть в системе, чтобы вы доверили ей выставление и сопоставление платежей? Что система может делать сама, а что всегда должен подтверждать человек?'},
- {n:59,text:'Какую часть работы Валерии ты хотел бы убрать полностью, а что она должна делать за 20 минут в день в новой системе?'}
+{id:8,title:'8. Problemas y deseos',questions:[
+ {n:56,star:true,text:'Las tres tareas que más tiempo os quitan.'},
+ {n:57,text:'¿Qué errores ocurren con más frecuencia?',groups:[cb(['factura duplicada','tarifa incorrecta','pago perdido','devolución no detectada','error de IVA'],{other:true})]},
+ {n:58,star:true,text:'¿Qué tendría que haber en el sistema para que le confiaseis la emisión de facturas y la conciliación de pagos? ¿Qué puede hacer el sistema por sí solo y qué debe confirmar siempre una persona?'},
+ {n:59,text:'¿Qué parte del trabajo de Valeria te gustaría eliminar por completo y qué debería hacer ella en 20 minutos al día en el nuevo sistema?'}
 ]}
 ];
 
 const SAMPLES = {
  id:9,
- title:'9. Образцы (обезличенные)',
- intro:'Отметьте, что можете прислать. Имена, DNI/NIE и IBAN замените или закройте.',
+ title:'9. Muestras (anonimizadas)',
+ intro:'Marca lo que puedes enviar. Sustituye o tapa los nombres, DNI/NIE e IBAN.',
  items:[
-  {text:'1–2 счёта клиентам (обычный и, если есть, rectificativa)',check:true},
-  {text:'Выгрузка счетов за месяц из программы выставления (несколько строк)',check:true},
-  {text:'1–2 счёта поставщиков',check:true},
-  {text:'Выгрузка банковской выписки в том формате, в каком вы её скачиваете (Norma 43 / CSV / PDF), несколько строк',check:true},
-  {text:'Список нескольких оплат клиентов и как вы их отметили',check:true},
-  {text:'Файл или отчёт по пакету SEPA-списаний (remesa) и пример возврата',check:true},
-  {text:'Таблица или список должников (как ведёте сейчас)',check:true},
-  {text:'То, что отправляете гестору за месяц (список файлов)',check:true},
-  {text:'Есть ли условия, на которых вы готовы дать данные (например, только обезличенные, без выноса за пределы ЕС)?',check:false}
+  {text:'1–2 facturas a clientes (una normal y, si existe, una rectificativa)',check:true},
+  {text:'Exportación de las facturas de un mes desde el programa de facturación (unas pocas líneas)',check:true},
+  {text:'1–2 facturas de proveedores',check:true},
+  {text:'Exportación del extracto bancario en el formato en que lo descargáis (Norma 43 / CSV / PDF), unas pocas líneas',check:true},
+  {text:'Lista de varios cobros de clientes y cómo los habéis marcado',check:true},
+  {text:'Archivo o informe de la remesa de domiciliaciones SEPA y un ejemplo de devolución',check:true},
+  {text:'Tabla o lista de morosos (tal como la lleváis ahora)',check:true},
+  {text:'Lo que enviáis al gestor cada mes (lista de archivos)',check:true},
+  {text:'¿Hay condiciones en las que estéis dispuestos a facilitar datos (por ejemplo, solo anonimizados, sin salir de la UE)?',check:false}
  ]
 };
 </script>
@@ -215,7 +248,7 @@ const SAMPLES = {
 <script>
 (function(){
 'use strict';
-var LANG='ru', T=UI[LANG];
+var LANG='es', T=UI[LANG];
 var KEY='ghofi-anketa-v1', SID_KEY='ghofi-anketa-sid';
 var V={};
 try{ V=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ V={}; }
@@ -410,7 +443,7 @@ function collectQuestion(q){
     if(g.other){
       var on=g.type==='radio'?V[base]==='other':!!V[base+'_other'];
       var ot=txt(base+'_othertxt');
-      if(on){ other=ot||'(отмечено)'; if(g.percent && txt(base+'_other_pct')) other+=' — '+txt(base+'_other_pct')+' %'; }
+      if(on){ other=ot||T.marked; if(g.percent && txt(base+'_other_pct')) other+=' — '+txt(base+'_other_pct')+' %'; }
     }
     return {label:g.label||'',selected:picked,other:other};
   });
