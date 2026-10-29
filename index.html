@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Анкета для Луиса: клиенты, счета, банк</title>
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--text:#1c2330;--muted:#5a6475;--line:#d5dae3;--accent:#1d4ed8;--accent-d:#1639a8;--star:#b45309;--starbg:#fff7e6;--ok:#15803d}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+header.top{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line);padding:8px 16px}
+.top-in{max-width:820px;margin:0 auto}
+.prog{display:flex;gap:16px;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+.prog>div{flex:1 1 220px}
+.bar{height:8px;background:#e6e9ef;border-radius:4px;overflow:hidden;margin-top:3px}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.bar.s i{background:var(--star)}
+main{max-width:820px;margin:0 auto;padding:16px}
+h1{font-size:26px;line-height:1.25;margin:8px 0 12px}
+h2{font-size:21px;margin:32px 0 12px}
+.intro{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px}
+.intro ul{padding-left:20px;margin:8px 0 0}
+.intro li{margin:6px 0}
+nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+nav.toc a{padding:10px 14px;background:#fff;border:1px solid var(--line);border-radius:999px;color:var(--accent);text-decoration:none;font-size:14px;min-height:44px;display:inline-flex;align-items:center}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+.q.star{border-color:#f0c36d;background:var(--starbg);border-left:5px solid var(--star)}
+.q.done{box-shadow:inset 0 0 0 1px var(--ok)}
+.qh{display:flex;gap:12px;align-items:flex-start}
+.num{flex:none;min-width:34px;height:34px;border-radius:17px;background:#e8edf9;color:var(--accent-d);font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 6px}
+.star .num{background:#fde6bd;color:var(--star)}
+.qt{margin:4px 0;font-weight:500}
+fieldset{border:0;padding:0;margin:10px 0 0}
+legend{padding:0;font-weight:500;margin-bottom:2px}
+.opt{display:flex;align-items:center;gap:10px;min-height:44px;padding:4px 6px;border-radius:8px;cursor:pointer}
+.opt:hover{background:rgba(29,78,216,.06)}
+.opt input[type=checkbox],.opt input[type=radio]{width:22px;height:22px;flex:none;accent-color:var(--accent);margin:0}
+input[type=text]{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--text);min-height:44px}
+input.pct{width:84px}
+input.oth{flex:1;min-width:120px}
+textarea{display:block;width:100%;margin-top:12px;font:inherit;padding:10px;border:1px solid var(--line);border-radius:8px;min-height:84px;resize:vertical;background:#fff;color:var(--text)}
+label.cm{display:block;margin-top:12px;font-size:13px;color:var(--muted)}
+label.cm textarea{margin-top:4px}
+:focus-visible{outline:3px solid #93b4ff;outline-offset:1px}
+.thanks{font-size:22px;font-weight:600;margin:32px 0 8px}
+.actions{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0 48px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn{font:inherit;font-weight:600;min-height:48px;padding:0 20px;border-radius:10px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+.btn:hover{background:var(--accent-d)}
+.btn.sec{background:#fff;color:var(--accent)}
+.btn.sec:hover{background:#eef3ff}
+.btn.danger{background:#fff;color:#b91c1c;border-color:#b91c1c}
+.note{flex:1 1 100%;font-size:14px;color:var(--muted);margin:0}
+#status{font-size:14px;color:var(--ok);min-height:20px;flex:1 1 100%}
+@media(max-width:520px){h1{font-size:22px}.btn{flex:1 1 100%;justify-content:center}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in"><div class="prog">
+<div><span id="pTxt"></span><div class="bar"><i id="pBar"></i></div></div>
+<div><span id="sTxt"></span><div class="bar s"><i id="sBar"></i></div></div>
+</div></div></header>
+<main id="app"></main>
+
+<script>
+const UI = {ru:{
+  title:'Анкета для Луиса: клиенты, счета, банк',
+  hello:'Привет, Луис!',
+  intro:'Эта анкета нужна, чтобы новая система для клиентов, счетов и банка повторяла ваш реальный процесс, а не наши догадки. Отвечай коротко, своими словами. Ответ «не знаю» или «зависит от случая» тоже полезен. Часть вопросов касается того, как сейчас устроена работа Валерии: ответь, пожалуйста, как ты это видишь.',
+  bullets:[
+    'Займёт примерно 40–60 минут. Можно заполнять по частям.',
+    '★ — самые важные вопросы. Если времени мало, ответь сначала на них.',
+    '(необяз.) — можно пропустить.',
+    'Где есть варианты, отметь нужные и при необходимости допиши.',
+    'Образцы документов, пожалуйста, обезличь: замени имена, DNI/NIE и IBAN. Нам важна структура, а не персональные данные.',
+    'После анкеты мы ещё раз обсудим с тобой открытые моменты в переписке.'
+  ],
+  optional:'(необяз.)', other:'Другое', otherPh:'допиши', pctPh:'%',
+  comment:'Комментарий / свободный ответ', answerPh:'Ответ',
+  sampleCheck:'Можем прислать', sampleComment:'Комментарий',
+  progQ:'Отвечено вопросов', progStar:'Из них ★-вопросы',
+  thanks:'Спасибо!',
+  download:'Скачать ответы', copy:'Скопировать ответы', copied:'Скопировано', copyFail:'Не удалось скопировать — используйте «Скачать ответы»',
+  downloaded:'Файлы скачаны (.txt и .json)',
+  mail:'Отправить Мурату по почте',
+  mailNote:'Длинные ответы почтовая программа может обрезать, поэтому лучше сначала нажать «Скачать ответы» и приложить файл к письму.',
+  clear:'Очистить ответы', clearConfirm:'Удалить все введённые ответы? Это действие нельзя отменить.',
+  noAnswer:'— нет ответа —', checked:'Отмечено', commentLbl:'Комментарий', otherLbl:'Другое',
+  canSend:'Можем прислать', cannotSend:'Не отмечено',
+  mailSubject:'Анкета GhoFi — ответы Луиса', mailTo:'podgoretskiy@gmail.com',
+  mailCut:'(Ответы обрезаны, полный файл во вложении)',
+  samplesTitle:'Образцы',
+  fileBase:'ghofi-anketa-otvety', filledOn:'Дата заполнения', tocTitle:'Разделы'
+}};
+
+const cb=(options,extra)=>Object.assign({type:'checkbox',options},extra||{});
+const rd=(options,extra)=>Object.assign({type:'radio',options},extra||{});
+
+const SECTIONS = [
+{id:1,title:'1. Общее и объёмы',questions:[
+ {n:1,star:true,text:'Сколько счетов клиентам выставляется в месяц (порядок)? Сколько счетов от поставщиков приходит в месяц?'},
+ {n:2,text:'Какие услуги и тарифы действуют?',groups:[cb(['фибра','мобильная связь','пакеты','фиксированная телефония','ТВ'],{other:true})],after:'Сколько тарифов примерно, есть ли старые тарифы, которые остались только у части клиентов?'},
+ {n:3,text:'Какая доля клиентов — физлица, а какая — компании и autónomos (примерно, %)?'},
+ {n:4,star:true,text:'Кто что делает сейчас (в том числе Валерия): кто выставляет счета, кто смотрит банк и отмечает оплаты, кто работает с должниками, кто платит поставщикам, кто общается с гестором? (Луис / Валерия / гестор / другие)'},
+ {n:5,star:true,text:'Сколько времени уходит на каждую задачу (в день или в неделю): выставление счетов, банк и оплаты, счета поставщиков, должники, отчёты?'},
+ {n:6,star:true,text:'Какие программы и инструменты используются сейчас?',groups:[cb(['Excel / Google Sheets','UISP','программа агента выставления счетов','порталы банков','бухгалтерская программа гестора','почта','WhatsApp','бумага'],{other:true})]},
+ {n:7,optional:true,text:'Сколько у компании сотрудников (порядок)? Есть ли свод по зарплатам и Seguridad Social в удобном виде (какой)?'}
+]},
+{id:2,title:'2. Клиенты и CRM',questions:[
+ {n:8,star:true,text:'Где сейчас хранится карточка клиента и что в ней есть?',groups:[cb(['ФИО / название','DNI / NIE / CIF','адрес установки','адрес для счетов','IBAN','мандат SEPA','телефон','email','тариф','оборудование','договор'],{other:true})]},
+ {n:9,text:'Как подключается новый клиент: шаги, кто вводит данные, где и как подписывается договор (бумага, PDF, электронная подпись)?'},
+ {n:10,text:'Как оформляются изменения: смена тарифа, адреса, владельца договора, IBAN? Как это отражается на счёте текущего месяца?'},
+ {n:11,text:'Как оформляется расторжение: сроки, возврат оборудования, последний счёт, штраф за досрочное расторжение (permanencia)?'},
+ {n:12,text:'Каналы общения с клиентами:',groups:[cb(['телефон','WhatsApp','email','офис','сайт'],{other:true})],after:'Где хранится история общения?'},
+ {n:13,text:'Оборудование клиентам:',groups:[cb(['продаётся','сдаётся в аренду','даётся бесплатно','в рассрочку'])],after:'Как это видно в счёте?'},
+ {n:14,optional:true,text:'Какую информацию о клиенте вы хотите видеть на одном экране, чтобы сразу ответить на любой вопрос о его деньгах?'}
+]},
+{id:3,title:'3. Выставление счетов и оплаты клиентов',questions:[
+ {n:15,star:true,text:'Через какого уполномоченного агента или какую программу выставляются счета? Умеет ли она выгружать счета?',groups:[cb(['CSV/Excel','XML','API','только PDF','не знаю'])]},
+ {n:16,star:true,text:'Когда выставляются счета:',groups:[rd(['раз в месяц, в одну дату (какую?)','по дате подключения клиента'],{other:true})],after:'Сколько занимает «день выставления»?'},
+ {n:17,text:'Серии нумерации: сколько их и какие (обычные счета, rectificativas, другие)?'},
+ {n:18,text:'Rectificativas: как часто, по каким причинам и как оформляются?'},
+ {n:19,text:'Есть ли пропорциональный расчёт (prorrateo) при подключении, отключении или смене тарифа в середине месяца? Как он считается?'},
+ {n:20,text:'Скидки, акции, бесплатные месяцы, компенсации за аварии — какие бывают и как применяются?'},
+ {n:21,text:'IVA: всегда 21 %? Есть ли клиенты с другим режимом (Канары / Сеута / Мелилья, клиенты из других стран ЕС, освобождения)?'},
+ {n:22,optional:true,text:'Есть ли клиенты-компании, которым нужна retención IRPF или особые реквизиты в счёте?'},
+ {n:23,text:'Бывают ли предоплата, оплата за несколько месяцев вперёд, рассрочка установки или оборудования?'},
+ {n:24,star:true,text:'Как клиенты платят и примерная доля:',groups:[cb(['SEPA-списание (recibo domiciliado)','карта / онлайн','перевод','наличные в офисе','Bizum'],{other:true,percent:true})]},
+ {n:25,star:true,text:'Как формируется пакет SEPA-списаний (remesa): кто, в какой программе, в какой банк, сколько квитанций в пакете? Остаётся ли у вас файл пакета со списком квитанций?'},
+ {n:26,optional:true,text:'Где хранятся мандаты SEPA (бумага, PDF, в системе) и их номера (referencia del mandato)?'},
+ {n:27,text:'Как клиент получает счёт:',groups:[cb(['PDF по email','личный кабинет','бумага','не получает'],{other:true})]},
+ {n:28,star:true,text:'',groups:[
+   rd(['ежемесячно','ежеквартально'],{label:'Как часто подаётся IVA (модель 303):'}),
+   rd(['меньше 6 010 121,04 €','больше'],{label:'Годовой оборот примерно:'})]},
+ {n:29,star:true,text:'',groups:[
+   rd(['уже работает','готовимся (к какой дате?)','не знаю'],{label:'Что говорит ваш агент или программа о Verifactu:'}),
+   rd(['да','нет','не знаю'],{label:'Подключены ли вы к SII?'})]}
+]},
+{id:4,title:'4. Счета поставщиков',questions:[
+ {n:30,star:true,text:'Основные группы поставщиков:',groups:[cb(['оптовые операторы / сеть','интерконнект / транзит','оборудование','электроэнергия','аренда','подрядчики / монтажники','программы и сервисы'],{other:true})],after:'Сколько активных поставщиков примерно?'},
+ {n:31,text:'Есть ли поставщики из других стран (ЕС / вне ЕС)? Какие?'},
+ {n:32,star:true,text:'Как приходят счета поставщиков:',groups:[cb(['PDF по email','портал поставщика','бумага','электронный счёт (Facturae)'],{other:true})],after:'Куда сохраняются?'},
+ {n:33,text:'Кто проверяет и одобряет счёт перед оплатой? Сверяете ли с договором или заказом?'},
+ {n:34,text:'Как платите поставщикам:',groups:[cb(['перевод вручную','пакет переводов','поставщик списывает сам','карта'])],after:'Кто подтверждает платёж в банке?'},
+ {n:35,text:'Как архивируются счета поставщиков и как передаются гестору?'},
+ {n:36,text:'Какие отраслевые платежи и сборы вы платите как оператор связи (что, кому и когда)?'},
+ {n:37,optional:true,text:'Есть ли субсидии, кредиты или лизинг (например, на сеть или оборудование)?'}
+]},
+{id:5,title:'5. Банк и оплаты',questions:[
+ {n:38,star:true,text:'Сколько банков и счетов, в каких банках и для чего каждый (поступления от клиентов, платежи поставщикам, налоги)?'},
+ {n:39,star:true,text:'Как получаете выписки:',groups:[cb(['Norma 43','CSV / Excel','PDF','только смотрим в портале'])],after:'Как часто и кто выгружает?'},
+ {n:40,text:'Сколько движений в месяц по каждому счёту (порядок)?'},
+ {n:41,star:true,text:'Как сейчас сопоставляете платёж с клиентом:',groups:[cb(['по сумме','по имени','по номеру клиента / счёта в назначении','по IBAN'],{other:true})],after:'Где отмечаете «оплачено»?'},
+ {n:42,text:'Что клиенты обычно пишут в назначении перевода? Просите ли указывать номер клиента или счёта?'},
+ {n:43,star:true,text:'Возвраты списаний (devoluciones): сколько в месяц (или %)? Видите ли причину возврата? Что делаете дальше:',groups:[cb(['повторное списание','комиссия за возврат','напоминание'],{other:true})]},
+ {n:44,text:'Как часто бывают частичные оплаты, переплаты, оплата за несколько месяцев сразу, один плательщик за несколько клиентов? Как вы это учитываете?'},
+ {n:45,text:'Бывают ли платежи от неизвестных плательщиков? Сколько примерно и что с ними делаете?'},
+ {n:46,optional:true,text:'Банковские комиссии за пакеты и возвраты — учитываете отдельно?'}
+]},
+{id:6,title:'6. Должники и напоминания',questions:[
+ {n:47,star:true,text:'Через сколько дней клиент считается должником? Сколько должников обычно и на какую сумму?'},
+ {n:48,text:'Как напоминаете:',groups:[cb(['SMS','email','звонок','WhatsApp','письмо'])],after:'Какие шаги и сроки? Кто за это отвечает?'},
+ {n:49,star:true,text:'Когда и как ограничиваете или отключаете услугу, как восстанавливаете после оплаты? Кто это делает и где (например, в UISP)? Есть ли плата за восстановление?'},
+ {n:50,optional:true,text:'Что делаете с безнадёжными долгами:',groups:[cb(['агентство по взысканию','списание','суд'],{other:true})]}
+]},
+{id:7,title:'7. Отчётность и гестор',questions:[
+ {n:51,star:true,text:'Кто ведёт бухгалтерию и налоги:',groups:[rd(['сами','внешний гестор / асесор','смешанно'])],after:'В какой программе? Кто подаёт декларации?'},
+ {n:52,text:'Что, в каком виде и когда вы отправляете гестору (выписки, счета, списки, зарплаты)?'},
+ {n:53,optional:true,text:'Какие декларации подаются:',groups:[cb(['303','390','111','115','347','349','200'],{other:true})]},
+ {n:54,text:'Какие цифры Луис хочет видеть регулярно:',groups:[cb(['выставлено и получено за месяц','долги клиентов','долги поставщикам','остатки по банкам','новые и ушедшие клиенты','средний чек','прогноз денег'])],after:'Как часто?'},
+ {n:55,text:'Как сейчас «закрывается» месяц и сколько это занимает?'}
+]},
+{id:8,title:'8. Боли и пожелания',questions:[
+ {n:56,star:true,text:'Три задачи, которые отнимают больше всего времени.'},
+ {n:57,text:'Какие ошибки случаются чаще всего?',groups:[cb(['двойной счёт','неверный тариф','потерянная оплата','пропущенный возврат','ошибка в IVA'],{other:true})]},
+ {n:58,star:true,text:'Что должно быть в системе, чтобы вы доверили ей выставление и сопоставление платежей? Что система может делать сама, а что всегда должен подтверждать человек?'},
+ {n:59,text:'Какую часть работы Валерии ты хотел бы убрать полностью, а что она должна делать за 20 минут в день в новой системе?'}
+]}
+];
+
+const SAMPLES = {
+ id:9,
+ title:'9. Образцы (обезличенные)',
+ intro:'Отметьте, что можете прислать. Имена, DNI/NIE и IBAN замените или закройте.',
+ items:[
+  {text:'1–2 счёта клиентам (обычный и, если есть, rectificativa)',check:true},
+  {text:'Выгрузка счетов за месяц из программы выставления (несколько строк)',check:true},
+  {text:'1–2 счёта поставщиков',check:true},
+  {text:'Выгрузка банковской выписки в том формате, в каком вы её скачиваете (Norma 43 / CSV / PDF), несколько строк',check:true},
+  {text:'Список нескольких оплат клиентов и как вы их отметили',check:true},
+  {text:'Файл или отчёт по пакету SEPA-списаний (remesa) и пример возврата',check:true},
+  {text:'Таблица или список должников (как ведёте сейчас)',check:true},
+  {text:'То, что отправляете гестору за месяц (список файлов)',check:true},
+  {text:'Есть ли условия, на которых вы готовы дать данные (например, только обезличенные, без выноса за пределы ЕС)?',check:false}
+ ]
+};
+</script>
+
+<script>
+(function(){
+'use strict';
+var LANG='ru', T=UI[LANG];
+var KEY='ghofi-anketa-v1';
+var V={};
+try{ V=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ V={}; }
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(V)); }catch(e){} }
+
+function el(tag,attrs,children){
+  var e=document.createElement(tag);
+  if(attrs) for(var k in attrs){
+    if(k==='text') e.textContent=attrs[k];
+    else if(k==='class') e.className=attrs[k];
+    else e.setAttribute(k,attrs[k]);
+  }
+  (children||[]).forEach(function(c){ if(c) e.appendChild(c); });
+  return e;
+}
+
+function textarea(name,ph){
+  var t=el('textarea',{'data-k':name,name:name,rows:'3','aria-label':ph});
+  t.placeholder=ph; return t;
+}
+
+function renderGroup(q,g,gi){
+  var fs=el('fieldset');
+  if(g.label) fs.appendChild(el('legend',{text:g.label}));
+  var base='q'+q.n+'_g'+gi;
+  g.options.forEach(function(o,oi){
+    var row=el('label',{class:'opt'});
+    var inp=el('input',{type:g.type,'data-k':g.type==='radio'?base:base+'_o'+oi,name:g.type==='radio'?base:base+'_o'+oi});
+    if(g.type==='radio') inp.value='o'+oi;
+    row.appendChild(inp); row.appendChild(el('span',{text:o}));
+    if(g.percent){
+      var p=el('input',{type:'text',inputmode:'decimal',class:'pct','data-k':base+'_o'+oi+'_pct',name:base+'_o'+oi+'_pct','aria-label':o+', %'});
+      p.placeholder=T.pctPh; row.appendChild(p);
+    }
+    fs.appendChild(row);
+  });
+  if(g.other){
+    var r=el('label',{class:'opt'});
+    var ci=el('input',{type:g.type,'data-k':g.type==='radio'?base:base+'_other',name:g.type==='radio'?base:base+'_other'});
+    if(g.type==='radio') ci.value='other';
+    r.appendChild(ci); r.appendChild(el('span',{text:T.other}));
+    var ot=el('input',{type:'text',class:'oth','data-k':base+'_othertxt',name:base+'_othertxt','aria-label':T.other});
+    ot.placeholder=T.otherPh; r.appendChild(ot);
+    if(g.percent){
+      var op=el('input',{type:'text',inputmode:'decimal',class:'pct','data-k':base+'_other_pct',name:base+'_other_pct','aria-label':T.other+', %'});
+      op.placeholder=T.pctPh; r.appendChild(op);
+    }
+    fs.appendChild(r);
+  }
+  return fs;
+}
+
+function qTitle(q){
+  var s='';
+  if(q.star) s+='★ ';
+  if(q.optional) s+=T.optional+' ';
+  return s+q.text;
+}
+
+function renderQuestion(q){
+  var card=el('section',{class:'q'+(q.star?' star':''),id:'q'+q.n});
+  var head=el('div',{class:'qh'});
+  head.appendChild(el('div',{class:'num',text:String(q.n)}));
+  var body=el('div',{style:'flex:1;min-width:0'});
+  var t=qTitle(q).trim();
+  if(t) body.appendChild(el('p',{class:'qt',text:t}));
+  (q.groups||[]).forEach(function(g,gi){ body.appendChild(renderGroup(q,g,gi)); });
+  if(q.after) body.appendChild(el('p',{class:'qt',style:'margin-top:12px',text:q.after}));
+  if(q.groups){
+    var lab=el('label',{class:'cm',text:T.comment});
+    lab.appendChild(textarea('q'+q.n+'_c',T.comment));
+    body.appendChild(lab);
+  } else {
+    body.appendChild(textarea('q'+q.n+'_c',T.answerPh));
+  }
+  head.appendChild(body); card.appendChild(head);
+  return card;
+}
+
+function allQuestions(){
+  var r=[]; SECTIONS.forEach(function(s){ s.questions.forEach(function(q){ r.push(q); }); }); return r;
+}
+
+function render(){
+  var app=document.getElementById('app'); app.textContent='';
+  document.title=T.title;
+  app.appendChild(el('h1',{text:T.title}));
+  var intro=el('div',{class:'intro'});
+  intro.appendChild(el('p',{text:T.hello,style:'margin-top:0;font-weight:600'}));
+  intro.appendChild(el('p',{text:T.intro}));
+  var ul=el('ul'); T.bullets.forEach(function(b){ ul.appendChild(el('li',{text:b})); });
+  intro.appendChild(ul); app.appendChild(intro);
+
+  var toc=el('nav',{class:'toc','aria-label':T.tocTitle});
+  SECTIONS.concat([{id:9,title:SAMPLES.title}]).forEach(function(s){ toc.appendChild(el('a',{href:'#sec'+s.id,text:s.title})); });
+  app.appendChild(toc);
+
+  SECTIONS.forEach(function(s){
+    app.appendChild(el('h2',{id:'sec'+s.id,text:s.title}));
+    s.questions.forEach(function(q){ app.appendChild(renderQuestion(q)); });
+  });
+
+  app.appendChild(el('h2',{id:'sec9',text:SAMPLES.title}));
+  app.appendChild(el('p',{text:SAMPLES.intro}));
+  SAMPLES.items.forEach(function(it,i){
+    var card=el('section',{class:'q'});
+    card.appendChild(el('p',{class:'qt',text:it.text}));
+    if(it.check){
+      var row=el('label',{class:'opt'});
+      row.appendChild(el('input',{type:'checkbox','data-k':'s'+i+'_chk',name:'s'+i+'_chk'}));
+      row.appendChild(el('span',{text:T.sampleCheck}));
+      card.appendChild(row);
+      var lab=el('label',{class:'cm',text:T.sampleComment});
+      lab.appendChild(textarea('s'+i+'_c',T.sampleComment)); card.appendChild(lab);
+    } else {
+      card.appendChild(textarea('s'+i+'_c',T.answerPh));
+    }
+    app.appendChild(card);
+  });
+
+  app.appendChild(el('p',{class:'thanks',text:T.thanks}));
+  var act=el('div',{class:'actions'});
+  act.appendChild(el('button',{type:'button',class:'btn',id:'bDl',text:T.download}));
+  act.appendChild(el('button',{type:'button',class:'btn sec',id:'bCp',text:T.copy}));
+  act.appendChild(el('a',{class:'btn sec',id:'bMail',href:'#',text:T.mail}));
+  act.appendChild(el('p',{class:'note',text:T.mailNote}));
+  act.appendChild(el('button',{type:'button',class:'btn danger',id:'bClr',text:T.clear}));
+  act.appendChild(el('div',{id:'status',role:'status','aria-live':'polite'}));
+  app.appendChild(act);
+
+  restore();
+  bind();
+  refresh();
+}
+
+function restore(){
+  document.querySelectorAll('[data-k]').forEach(function(i){
+    var k=i.getAttribute('data-k'), v=V[k];
+    if(i.type==='checkbox') i.checked=!!v;
+    else if(i.type==='radio') i.checked=(v===i.value);
+    else i.value=(v==null?'':v);
+  });
+}
+
+function bind(){
+  var app=document.getElementById('app');
+  function onChange(ev){
+    var i=ev.target; if(!i.getAttribute||!i.getAttribute('data-k')) return;
+    var k=i.getAttribute('data-k');
+    if(i.type==='checkbox') V[k]=i.checked;
+    else if(i.type==='radio'){ if(i.checked) V[k]=i.value; }
+    else V[k]=i.value;
+    save(); refresh();
+  }
+  app.addEventListener('input',onChange);
+  app.addEventListener('change',onChange);
+  document.getElementById('bDl').addEventListener('click',download);
+  document.getElementById('bCp').addEventListener('click',copy);
+  document.getElementById('bMail').addEventListener('click',function(ev){ ev.currentTarget.href=mailHref(); });
+  document.getElementById('bClr').addEventListener('click',function(){
+    if(!confirm(T.clearConfirm)) return;
+    V={}; try{ localStorage.removeItem(KEY); }catch(e){}
+    restore(); refresh(); say('');
+  });
+}
+
+function say(m){ var s=document.getElementById('status'); if(s) s.textContent=m; }
+
+/* ---------- collecting answers ---------- */
+function txt(k){ return (V[k]==null?'':String(V[k])).trim(); }
+
+function collectQuestion(q){
+  var groups=(q.groups||[]).map(function(g,gi){
+    var base='q'+q.n+'_g'+gi, picked=[], other='';
+    g.options.forEach(function(o,oi){
+      var on=g.type==='radio'?V[base]==='o'+oi:!!V[base+'_o'+oi];
+      if(on){ var it={option:o}; if(g.percent && txt(base+'_o'+oi+'_pct')) it.percent=txt(base+'_o'+oi+'_pct'); picked.push(it); }
+    });
+    if(g.other){
+      var on=g.type==='radio'?V[base]==='other':!!V[base+'_other'];
+      var ot=txt(base+'_othertxt');
+      if(on||ot){ other=ot||'(отмечено)'; if(g.percent && txt(base+'_other_pct')) other+=' — '+txt(base+'_other_pct')+' %'; }
+    }
+    return {label:g.label||'',selected:picked,other:other};
+  });
+  var comment=txt('q'+q.n+'_c');
+  var answered=!!comment||groups.some(function(g){ return g.selected.length||g.other; });
+  return {n:q.n,star:!!q.star,optional:!!q.optional,question:((q.text?q.text+' ':'')+(q.after||'')).trim(),groups:groups,comment:comment,answered:answered};
+}
+
+function collectAll(){
+  var secs=SECTIONS.map(function(s){ return {title:s.title,questions:s.questions.map(collectQuestion)}; });
+  var samples=SAMPLES.items.map(function(it,i){
+    return {item:it.text,canSend:it.check?!!V['s'+i+'_chk']:null,comment:txt('s'+i+'_c')};
+  });
+  return {filled:dateStr(),sections:secs,samples:{title:SAMPLES.title,items:samples}};
+}
+
+function dateStr(){
+  var d=new Date(), p=function(n){ return (n<10?'0':'')+n; };
+  return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());
+}
+
+function toText(data){
+  var L=[];
+  L.push(T.title); L.push(T.filledOn+': '+data.filled); L.push('');
+  data.sections.forEach(function(s){
+    L.push('== '+s.title+' =='); L.push('');
+    s.questions.forEach(function(q){
+      L.push(q.n+'. '+(q.star?'★ ':'')+(q.optional?T.optional+' ':'')+q.question);
+      if(!q.answered){ L.push('   '+T.noAnswer); }
+      else{
+        q.groups.forEach(function(g){
+          var parts=g.selected.map(function(it){ return it.option+(it.percent?' — '+it.percent+' %':''); });
+          if(g.other) parts.push(T.otherLbl+': '+g.other);
+          if(g.label||parts.length) L.push('   '+(g.label?g.label+' ':'')+(parts.length?T.checked+': '+parts.join('; '):T.noAnswer));
+        });
+        if(q.comment) L.push('   '+(q.groups.length?T.commentLbl+': ':'')+q.comment.replace(/\n/g,'\n   '));
+      }
+      L.push('');
+    });
+  });
+  L.push('== '+data.samples.title+' =='); L.push('');
+  data.samples.items.forEach(function(it,i){
+    L.push((i+1)+'. '+it.item);
+    if(it.canSend===null){ L.push('   '+(it.comment?it.comment.replace(/\n/g,'\n   '):T.noAnswer)); }
+    else{
+      L.push('   '+(it.canSend?T.canSend:T.cannotSend));
+      L.push('   '+T.commentLbl+': '+(it.comment?it.comment.replace(/\n/g,'\n   '):T.noAnswer));
+    }
+    L.push('');
+  });
+  return L.join('\n');
+}
+
+/* ---------- actions ---------- */
+function saveFile(name,content,type){
+  var blob=new Blob([content],{type:type+';charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a'); a.href=url; a.download=name;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); },2000);
+}
+
+function download(){
+  var data=collectAll(), base=T.fileBase+'-'+data.filled;
+  saveFile(base+'.txt',toText(data),'text/plain');
+  setTimeout(function(){ saveFile(base+'.json',JSON.stringify(data,null,2),'application/json'); },400);
+  say(T.downloaded);
+}
+
+function copy(){
+  var s=toText(collectAll());
+  function fallback(){
+    var ta=document.createElement('textarea'); ta.value=s; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    var ok=false; try{ ok=document.execCommand('copy'); }catch(e){}
+    document.body.removeChild(ta);
+    say(ok?T.copied:T.copyFail);
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(s).then(function(){ say(T.copied); },fallback);
+  } else fallback();
+}
+
+function mailHref(){
+  var s=toText(collectAll());
+  if(s.length>1800) s=s.slice(0,1500)+'\n\n'+T.mailCut;
+  return 'mailto:'+T.mailTo+'?subject='+encodeURIComponent(T.mailSubject)+'&body='+encodeURIComponent(s);
+}
+
+/* ---------- progress ---------- */
+function refresh(){
+  var qs=allQuestions(), done=0, stars=0, starDone=0;
+  qs.forEach(function(q){
+    var c=collectQuestion(q);
+    if(q.star) stars++;
+    if(c.answered){ done++; if(q.star) starDone++; }
+    var card=document.getElementById('q'+q.n);
+    if(card) card.classList.toggle('done',c.answered);
+  });
+  document.getElementById('pTxt').textContent=T.progQ+': '+done+' / '+qs.length;
+  document.getElementById('sTxt').textContent=T.progStar+': '+starDone+' / '+stars;
+  document.getElementById('pBar').style.width=(100*done/qs.length)+'%';
+  document.getElementById('sBar').style.width=(100*starDone/stars)+'%';
+}
+
+render();
+})();
+</script>
+</body>
+</html>
