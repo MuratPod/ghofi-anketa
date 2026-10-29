@@ -2,10 +2,12 @@
 const {chromium}=require('playwright');
 const http=require('http'),fs=require('fs'),path=require('path'),assert=require('assert');
 const HTML=fs.readFileSync(path.join(__dirname,'..','index.html'),'utf8');
-const EP='https://script.google.com/macros/s/TEST/exec';
+const EP=HTML.match(/const SHEET_ENDPOINT = '([^']*)';/)[1];
+// '/' — страница с плейсхолдером (проверка «не настроено»), '/ep.html' — страница как в репо (реальный URL)
+const HTML_PH=HTML.replace("'"+EP+"'","'REPLACE_WITH_WEB_APP_URL'");
 const srv=http.createServer((q,r)=>{
-  if(q.url==='/'||q.url.startsWith('/?')){r.setHeader('content-type','text/html; charset=utf-8');return r.end(HTML);}
-  if(q.url==='/ep.html'){r.setHeader('content-type','text/html; charset=utf-8');return r.end(HTML.replace("'REPLACE_WITH_WEB_APP_URL'","'"+EP+"'"));}
+  if(q.url==='/'||q.url.startsWith('/?')){r.setHeader('content-type','text/html; charset=utf-8');return r.end(HTML_PH);}
+  if(q.url==='/ep.html'){r.setHeader('content-type','text/html; charset=utf-8');return r.end(HTML);}
   r.statusCode=404;r.end();
 });
 (async()=>{
@@ -17,6 +19,8 @@ const p=await ctx.newPage();
 const errs=[];
 p.on('console',m=>{if(m.type()==='error')errs.push('console:'+m.text())});
 p.on('pageerror',e=>errs.push('pageerror:'+e.message));
+// ни один запрос не уходит на настоящий script.google.com
+await ctx.route('https://script.google.com/**',r=>r.fulfill({status:200,body:'ok'}));
 const posts=[];
 await p.route(EP,r=>{ if(r.request().method()==='POST') posts.push({body:r.request().postData(),ct:r.request().headers()['content-type']}); return r.fulfill({status:200,body:'ok'}); });
 const k=s=>p.locator('[data-k="'+s+'"]');
